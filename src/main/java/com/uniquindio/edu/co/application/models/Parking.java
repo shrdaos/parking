@@ -1,5 +1,8 @@
 package com.uniquindio.edu.co.application.models;
 import java.util.*;
+import java.util.function.Predicate;
+
+import com.uniquindio.edu.co.application.models.enums.UserRole;
 
 public class Parking {
 
@@ -86,6 +89,43 @@ public class Parking {
                 + ", recordList=" + recordList + "]";
     }
 
+    public void burnData() {
+        //se queman los espacios
+    spaceList.add(new Space(1,1,null,null));
+    spaceList.add(new Space(1,2,null,null));
+    spaceList.add(new Space(1,3,null,null));
+    spaceList.add(new Space(1,4,null,null));
+    spaceList.add(new Space(1,5,null,null));
+    spaceList.add(new Space(1,6,null,null));
+    spaceList.add(new Space(2,1,null,null));
+
+    //se quema la lista de usuarios
+    userList.add(new User("sharon", "1193391919","asdf", "sharon@gmail.com", null, UserRole.ADMIN));
+
+    Car  clientCar = new Car("2019","sun24");
+    Car  clientCar2 = new Car("2022","lpy24");
+    User client1 =new User("juan", "2298891919","asdf", "juan@gmail.com", null, UserRole.CLIENT); 
+    User client2 =new User("pablito", "2298803919","asdf", "pablo@gmail.com", null, UserRole.CLIENT); 
+    try {
+        client1.addNewVehicle(clientCar);
+        client2.addNewVehicle(clientCar2);
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    userList.add(client1);
+    userList.add(client2);
+
+    //
+    }
+
+    public User  getUserByCredentials(String email,String password) throws Exception{
+        Predicate<User> matchCredentials = j -> (j.isMatchCredentials(email,password));
+        Optional<User> user = userList.stream().filter(matchCredentials).findFirst();
+        if(user.isPresent())
+            return user.get();
+		throw new Exception("Revise las credenciales e intente nuevamente");
+    }
     
 
 

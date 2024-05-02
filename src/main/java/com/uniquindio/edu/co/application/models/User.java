@@ -18,7 +18,15 @@ public class User {
         this.identification = identification;
         this.password = password;
         this.email = email;
-        this.vehicleList = vehicleList;
+        //si la lista de vehiculos del usuario es nula se crea una nueva lista vacia,
+        //esto con el fin de evitar NullPointerException
+
+        if(vehicleList == null){
+            this.vehicleList = new ArrayList<>();
+        }else{
+            this.vehicleList = vehicleList;
+        }
+
         this.userRole = userRole;
     }
     public String getName() {
@@ -57,10 +65,25 @@ public class User {
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
+    public void addNewVehicle(Vehicle vehicle) throws Exception{
+
+        if(!vehicleList.contains(vehicle)){
+            vehicleList.add(vehicle);
+        }else{
+            throw new Exception("No se puede agregar dos veces el mismo vehiculo a un usuario.");
+        }
+
+    }
     @Override
     public String toString() {
         return "User [name=" + name + ", identification=" + identification + ", password=" + password + ", email="
                 + email + ", vehicleList=" + vehicleList + ", userRole=" + userRole + "]";
+    }
+    
+    public boolean isMatchCredentials(String email, String password) {
+        if(this.email.equals(email) && this.password.equals(password))
+            return true;
+        return false;
     }
 
     

@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.uniquindio.edu.co.application.App;
+import com.uniquindio.edu.co.application.models.Utils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class LoginController implements Initializable {
+    private App app;
 
     @FXML
     private TextField emailTXT;
@@ -24,9 +26,26 @@ public class LoginController implements Initializable {
 
     @FXML
     void loginUser(ActionEvent event) {
-        System.out.println("hola");
 
-    }
+        try {
+
+            if (Utils.isValidEmail(emailTXT.getText()) == false){
+                throw new Exception("El email debe ser valido del tipo user@gmail.com");
+            }
+            if (Utils.isValidString(passwordTXT.getText()) == false){
+                throw new Exception("Ingrese una contraseña");
+            }
+
+            app.loginUser(emailTXT.getText(),passwordTXT.getText());
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showErrorMessage("Error al hacer login", e.getMessage());
+        }
+
+        }
+
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -34,7 +53,7 @@ public class LoginController implements Initializable {
     }
 
     public void setMain(App app) {
-        // TODO Auto-generated method stub
+        this.app = app;
     }
 
 }
