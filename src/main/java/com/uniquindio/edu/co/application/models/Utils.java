@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Utils {
@@ -112,5 +113,16 @@ public class Utils {
 			return true;
 		}
 		return false;
+	}
+	public static int getNaturalIntegerJOption(String message){
+		while(true){
+			try {
+				int integer = Integer.parseInt(JOptionPane.showInputDialog(message));
+				if(integer>0)
+					return integer;	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uniquindio.edu.co.application.controllers.DashboardController">
    <children>
       <TabPane layoutX="-1.0" prefHeight="514.0" prefWidth="670.0" tabClosingPolicy="UNAVAILABLE">
@@ -30,9 +29,8 @@
                         </ScrollPane>
                         <ImageView fitHeight="126.0" fitWidth="154.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../../../../../Imágenes/Ryujinx/ryujinx_capture_2024-03-10_06-05-16.png" />
-                           </image>
-                        </ImageView>
+                              <Image url="@../resources/images/admin.jpg" />
+                           </image></ImageView>
                         <Label layoutX="232.0" layoutY="14.0" text="Tarifa de motocicleta clásica" />
                         <Label layoutX="232.0" layoutY="48.0" text="Tarifa de motocicleta hibrida (hora)" />
                         <Label layoutX="230.0" layoutY="83.0" text="Tarifa de carro (hora)" />
