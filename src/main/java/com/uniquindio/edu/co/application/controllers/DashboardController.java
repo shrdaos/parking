@@ -112,9 +112,10 @@ public class DashboardController implements Initializable {
 
     }
     public void spaceClickedAction(MouseEvent event,int i,int j,Label lblColor, VBox card) {
+        app.handleSpaceClicked(lblColor,card,i,j);
         System.out.println("Hola mundo i"+i+"  j"+j);
-        lblColor.setStyle("-fx-background-color: #ff0000");
-        card.setStyle("-fx-border-color:  #ff0000");
+        //lblColor.setStyle("-fx-background-color: #ff0000");
+        //card.setStyle("-fx-border-color:  #ff0000");
     }
 
     public void setMain(App app,int totalSpaces) {

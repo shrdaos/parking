@@ -3,6 +3,7 @@ package com.uniquindio.edu.co.application;
 
 import java.io.IOException;
 import java.lang.ModuleLayer.Controller;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import javax.swing.text.Utilities;
 
 import com.uniquindio.edu.co.application.controllers.DashboardController;
 import com.uniquindio.edu.co.application.controllers.LoginController;
+import com.uniquindio.edu.co.application.controllers.ReservationController;
 import com.uniquindio.edu.co.application.models.Parking;
 import com.uniquindio.edu.co.application.models.Space;
+import com.uniquindio.edu.co.application.models.SpaceRecord;
 import com.uniquindio.edu.co.application.models.User;
 import com.uniquindio.edu.co.application.models.Utils;
 import com.uniquindio.edu.co.application.models.enums.UserRole;
@@ -19,8 +22,10 @@ import com.uniquindio.edu.co.application.models.enums.UserRole;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -29,6 +34,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     private User sesionUser;
     private Stage primaryStage;
+    private Stage secondaryStage;
 	private Parking parking;
     @Override
     public void start(Stage stage) throws Exception {
@@ -84,7 +90,26 @@ public class App extends Application {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'showClientView'");
 	}
+	//show
+	public void showReservation(Label lblColor, VBox card, int i, int j) {
+		this.secondaryStage = new Stage();
+		try {
 
+			ArrayList<String> userClientsNamesAndIdentification = parking.getUserClientNamesAndIdentification();
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("views/ReservationView.fxml"));
+			AnchorPane rootLayout = (AnchorPane)loader.load();
+			ReservationController controller = loader.getController();
+			controller.setMain(this, userClientsNamesAndIdentification,lblColor,card,i,j);
+			Scene scene = new Scene(rootLayout);
+			secondaryStage.setScene(scene);
+			secondaryStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void showDashboard() {
 		int totalSpaces = Utils.getNaturalIntegerJOption("Ingrese la cantidad total de espacios en el parqueadero");
@@ -106,4 +131,32 @@ public class App extends Application {
 	public void setSpaces(List<Space> spaces) {
 		parking.setSpaceList(spaces);
 	}
+
+	public ArrayList<String> getVehiclesLicensePlateAndModelByUserId(String userId) throws Exception {
+		return parking.getVehiclesLicensePlateAndModelByUserId(userId);
+	}
+
+	public void handleSpaceClicked(Label lblColor, VBox card, int i, int j) {
+		if(parking.isFreeSpace(i,j)){
+			showReservation(lblColor, card, i, j);
+		}else{
+			showReservationDetails(lblColor, card, i, j);
+		}
+	}
+
+	private void showReservationDetails(Label lblColor, VBox card, int i, int j) {
+		Space space;
+		try {
+			space = parking.getSpaceUsingPosition(i, j);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean reserveSpace(String userIdentification, String vehicleLicensePlate, LocalDateTime selectedDateTime,
+			int i, int j) throws Exception {
+		return parking.reserveSpace(userIdentification,vehicleLicensePlate,selectedDateTime,i,j);
+	}
+
 }

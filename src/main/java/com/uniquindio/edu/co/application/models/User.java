@@ -1,6 +1,8 @@
 package com.uniquindio.edu.co.application.models;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.uniquindio.edu.co.application.models.enums.UserRole;
 
@@ -84,6 +86,22 @@ public class User {
         if(this.email.equals(email) && this.password.equals(password))
             return true;
         return false;
+    }
+    public ArrayList<String> getVehiclesLicensePlateAndModel() {
+          return vehicleList.stream()
+                .map(vehicle -> vehicle.getModel()+"-"+vehicle.getLicensePlate())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+    public Vehicle getVehicleByLicensePlate(String vehicleLicensePlate) throws Exception {
+        Predicate<Vehicle>matchLicensePlate = vehicle -> (vehicle.getLicensePlate().equals(vehicleLicensePlate));
+        Optional<Vehicle> vehicle = vehicleList.stream().filter(matchLicensePlate).findFirst();
+        if(vehicle.isPresent())
+            return vehicle.get();
+		throw new Exception("El vehiculo no existe");
+
+
+
+
     }
 
     

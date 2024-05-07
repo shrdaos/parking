@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="339.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uniquindio.edu.co.application.controllers.ReservationController">
+   <children>
+      <Button layoutX="134.0" layoutY="346.0" mnemonicParsing="false" onAction="#reserveSpace" text="Reservar" />
+      <Label layoutX="35.0" layoutY="33.0" prefHeight="18.0" prefWidth="42.0" text="Desde :" />
+      <Label layoutX="113.0" layoutY="130.0" text="Hora " />
+      <Label layoutX="183.0" layoutY="131.0" text="Minuto" />
+      <TextField fx:id="hourTXT" layoutX="96.0" layoutY="152.0" prefHeight="26.0" prefWidth="62.0" />
+      <TextField fx:id="minuteTXT" layoutX="177.0" layoutY="152.0" prefHeight="26.0" prefWidth="55.0" />
+      <RadioButton fx:id="takeSystemTimeRbtn" layoutX="89.0" layoutY="190.0" mnemonicParsing="false" text="Tomar hora/minuto del sistema" />
+      <ComboBox fx:id="userComboBox" layoutX="95.0" layoutY="220.0" prefHeight="26.0" prefWidth="218.0" />
+      <Label layoutX="29.0" layoutY="223.0" text="Usuario :" />
+      <Label layoutX="30.0" layoutY="260.0" text="Vehiculo :" />
+      <ComboBox fx:id="vehicleComboBox" layoutX="95.0" layoutY="255.0" prefHeight="26.0" prefWidth="218.0" />
+      <DatePicker fx:id="datePicker" layoutX="95.0" layoutY="91.0" prefHeight="26.0" prefWidth="137.0" />
+      <Label layoutX="135.0" layoutY="71.0" prefHeight="18.0" prefWidth="42.0" text="Fecha" />
+   </children>
+</AnchorPane>

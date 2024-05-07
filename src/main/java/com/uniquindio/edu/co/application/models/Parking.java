@@ -1,6 +1,11 @@
 package com.uniquindio.edu.co.application.models;
-import java.util.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.uniquindio.edu.co.application.models.enums.UserRole;
 
@@ -13,10 +18,10 @@ public class Parking {
 
    private List<Space> spaceList;
    private List<User> userList;
-   private List<Record> recordList;
+   private List<SpaceRecord> recordList;
 
     public Parking(String name, double classicMotorcicleFee, double hybridMotorcicleFee, double carFee,
-        List<Space> spaceList, List<User> userList, List<Record> recordList) {
+        List<Space> spaceList, List<User> userList, List<SpaceRecord> recordList) {
         this.name = name;
         this.classicMotorcicleFee = classicMotorcicleFee;
         this.hybridMotorcicleFee = hybridMotorcicleFee;
@@ -74,11 +79,11 @@ public class Parking {
         this.userList = userList;
     }
 
-    public List<Record> getRecordList() {
+    public List<SpaceRecord> getRecordList() {
         return recordList;
     }
 
-    public void setRecordList(List<Record> recordList) {
+    public void setRecordList(List<SpaceRecord> recordList) {
         this.recordList = recordList;
     }
 
@@ -102,8 +107,8 @@ public class Parking {
     //se quema la lista de usuarios
     userList.add(new User("sharon", "1193391919","asdf", "sharon@gmail.com", null, UserRole.ADMIN));
 
-    Car  clientCar = new Car("2019","sun24");
-    Car  clientCar2 = new Car("2022","lpy24");
+    Car  clientCar = new Car("eco deluxe 2019","sun24");
+    Car  clientCar2 = new Car("victory bomber 2022","lpy24");
     User client1 =new User("juan", "2298891919","asdf", "juan@gmail.com", null, UserRole.CLIENT); 
     User client2 =new User("pablito", "2298803919","asdf", "pablo@gmail.com", null, UserRole.CLIENT); 
     try {
@@ -126,6 +131,84 @@ public class Parking {
             return user.get();
 		throw new Exception("Revise las credenciales e intente nuevamente");
     }
+    public User  getUserById(String id) throws Exception{
+        Predicate<User> matchId = j -> (j.getIdentification().equals(id));
+        Optional<User> user = userList.stream().filter(matchId).findFirst();
+        if(user.isPresent())
+            return user.get();
+		throw new Exception("El número de identificación no existe");
+    }
+
+    public ArrayList<String> getUserClientNamesAndIdentification() {
+        return userList.stream()
+                .map(user -> user.getName() + "-" + user.getIdentification())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<String> getVehiclesLicensePlateAndModelByUserId(String userId) throws Exception {
+        User user = getUserById(userId);
+        return user.getVehiclesLicensePlateAndModel();
+    }
+
+    public boolean isFreeSpace(int i, int j) {
+        Predicate<Space> matchSpace = space -> (space.matchPosition(i,j) && space.isFree());
+        Optional<Space> space = spaceList.stream().filter(matchSpace).findFirst();
+        if(space.isPresent())
+            return true;
+        return false;
+    }
+
+    public boolean reserveSpace(String userIdentification, String vehicleLicensePlate, LocalDateTime selectedDateTime,
+            int i, int j) throws Exception {
+            
+        if(!isFreeSpace(i, j))
+                throw new Exception("El espacio ya fue reservado");
+        if(vehicleAlreadyOnSpace(vehicleLicensePlate))
+                throw new Exception("El vehiculo ya se encuentra en un espacio, debe retirarlo primero.");
+
+        //obtenemos la informacio'n necesaria para la reserva
+        Space space = getSpaceUsingPosition(i,j);
+        User user = getUserById(userIdentification);
+        Vehicle vehicle = user.getVehicleByLicensePlate(vehicleLicensePlate);
+        //guardamos la informacion del vehiculo y la hora de reserva
+        space.setVehicle(vehicle);
+        space.setStartTime(selectedDateTime);
+
+        createRecord(user.getIdentification(),vehicle.getModel(),vehicleLicensePlate,selectedDateTime,i,j);
+
+        return true;
+
+    }
+
+    private void createRecord(String userIdentification, String model,String licensePlate, LocalDateTime selectedDateTime,
+                              int positionI, int positionJ) {
+        SpaceRecord record = new SpaceRecord(selectedDateTime, null, model, licensePlate, userIdentification, positionI, positionJ);
+        this.recordList.add(record);
+    }
+
+    //permite obtener un espacio usando su posicion i j
+    public Space getSpaceUsingPosition(int i, int j) throws Exception {
+
+        Predicate<Space>matchPosition = space -> (space.matchPosition(i, j));
+        Optional<Space> space = spaceList.stream().filter(matchPosition).findFirst();
+        if(space.isPresent())
+            return space.get();
+		throw new Exception("El espacio i:"+i+" j:"+j+" no existe");
+
+
+    }
+
+    //metodo que verifica si un vehiculo ya esta' en algu'n espacio por medio de la placa (para evitar reservar dos
+    //espacios con el mismo vehiculo)
+    private boolean vehicleAlreadyOnSpace(String vehicleLicensePlate) {
+       Predicate<Space> matchVehicleLicensePlate = space -> (space.matchVehicleLicensePlate(vehicleLicensePlate));
+        Optional<Space> space = spaceList.stream().filter(matchVehicleLicensePlate).findFirst();
+        if(space.isPresent())
+            return true;
+        return false;
+    }
+
+  
     
 
 

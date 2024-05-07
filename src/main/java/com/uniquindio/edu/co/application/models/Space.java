@@ -49,5 +49,25 @@ public class Space {
         return "Space [positionI=" + positionI + ", positionJ=" + positionJ + ", startTime=" + startTime + ", vehicle="
                 + vehicle + "]";
     }
+
+    public boolean matchPosition(int i, int j) {
+        if(this.positionI == i && this.positionJ ==j)
+            return true;
+        return false;
+    }
+
+    public boolean isFree() {
+        if(this.vehicle == null && this.startTime == null)
+            return true;
+        return false;
+    }
+
+    //verifica si el vehiculo en el espacio contiene la misma placa que la 
+    //placa que llega por parametro
+    public boolean matchVehicleLicensePlate(String vehicleLicensePlate) {
+        if(this.vehicle != null && vehicle.getLicensePlate().equals(vehicleLicensePlate))
+            return true;
+        return false;
+    }
     
 }
