@@ -78,11 +78,11 @@ public class ReservationController implements Initializable {
             vehicleLicensePlate = (vehicleComboBox.getSelectionModel().getSelectedItem()).split("-")[1];
             //se hace la reserva
             boolean isReserved = app.reserveSpace(userIdentification,vehicleLicensePlate,selectedDateTime,i,j);
-
-            this.lblColor.setStyle("-fx-background-color: #ff0000");
-            this.card.setStyle("-fx-border-color:  #ff0000");
-           // Obtener la fecha seleccionada en el DatePicker
-
+            if(isReserved){
+                this.lblColor.setStyle("-fx-background-color: #ff0000");
+                this.card.setStyle("-fx-border-color:  #ff0000");
+                app.closeSecundaryView();
+            }
         } catch (Exception e) {
             Utils.showErrorMessage("Error al reservar", e.getMessage());
         }

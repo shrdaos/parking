@@ -98,12 +98,14 @@ public class User {
         if(vehicle.isPresent())
             return vehicle.get();
 		throw new Exception("El vehiculo no existe");
-
-
-
-
     }
-
-    
+    public boolean hasVehicleMatchLicensePlate(String licensePlate) {
+        Predicate<Vehicle>matchLicensePlate = vehicle -> (vehicle.getLicensePlate().equals(licensePlate));
+        Optional<Vehicle> vehicle = vehicleList.stream().filter(matchLicensePlate).findFirst();
+        return vehicle.isPresent();
+    }
+    public int getTotalVehicles() {
+        return vehicleList.size();
+    }
     
 }

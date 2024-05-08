@@ -208,6 +208,15 @@ public class Parking {
         return false;
     }
 
+    //permite obtener un usuario por medio de la placa del vehiculo
+    public User getPropietaryByLicensePlate(String licensePlate) throws Exception {
+        Predicate<User>matchLicensePlate = user -> (user.hasVehicleMatchLicensePlate(licensePlate));
+        Optional<User> user = userList.stream().filter(matchLicensePlate).findFirst();
+        if(user.isPresent())
+            return user.get();
+		throw new Exception("No hay ningun usuario con un vehiculo cuya placa sea "+licensePlate);
+    }
+
   
     
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.uniquindio.edu.co.application.App;
+import com.uniquindio.edu.co.application.models.Space;
+import com.uniquindio.edu.co.application.models.User;
 import com.uniquindio.edu.co.application.models.Utils;
 
 import javafx.collections.ObservableList;
@@ -22,6 +24,8 @@ import javafx.scene.layout.VBox;
 
 public class ReservationsDetailsController implements Initializable {
     private App app;
+    private Label lblColor;
+    private VBox card;
     @FXML
     private ResourceBundle resources;
 
@@ -54,6 +58,7 @@ public class ReservationsDetailsController implements Initializable {
 
     @FXML
     void endReservationAction(ActionEvent event) {
+        System.out.println("terminando reservacion");
 
     }
 
@@ -68,6 +73,20 @@ public class ReservationsDetailsController implements Initializable {
         assert rolLbl != null : "fx:id=\"rolLbl\" was not injected: check your FXML file 'ReservationDetailsView.fxml'.";
         assert totalVehiclesLbl != null : "fx:id=\"totalVehiclesLbl\" was not injected: check your FXML file 'ReservationDetailsView.fxml'.";
 
+    }
+
+    public void setMain(App app, Space space,User user, Label lblColor, VBox card) {
+        this.app = app;
+        this.lblColor = lblColor;
+        this.card = card;
+        nameLbl.setText(user.getName());
+        identificationLbl.setText(user.getIdentification());
+        emailLbl.setText(user.getEmail());
+        rolLbl.setText(user.getUserRole().name());
+        totalVehiclesLbl.setText(" " +user.getTotalVehicles());
+        reservationDateLbl.setText(space.getStartTime().toString());
+        modelLbl.setText(space.getVehicle().getModel());
+        lisencePlateLbl.setText(space.getVehicle().getLicensePlate());
     }
 
 }

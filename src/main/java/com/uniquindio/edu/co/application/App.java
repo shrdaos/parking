@@ -12,6 +12,7 @@ import javax.swing.text.Utilities;
 import com.uniquindio.edu.co.application.controllers.DashboardController;
 import com.uniquindio.edu.co.application.controllers.LoginController;
 import com.uniquindio.edu.co.application.controllers.ReservationController;
+import com.uniquindio.edu.co.application.controllers.ReservationsDetailsController;
 import com.uniquindio.edu.co.application.models.Parking;
 import com.uniquindio.edu.co.application.models.Space;
 import com.uniquindio.edu.co.application.models.SpaceRecord;
@@ -148,6 +149,15 @@ public class App extends Application {
 		Space space;
 		try {
 			space = parking.getSpaceUsingPosition(i, j);
+			User user = parking.getPropietaryByLicensePlate(space.getVehicle().getLicensePlate());
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("views/ReservationDetailsView.fxml"));
+			AnchorPane rootLayout = (AnchorPane)loader.load();
+			ReservationsDetailsController controller = loader.getController();
+			controller.setMain(this,space,user,lblColor,card);
+			Scene scene = new Scene(rootLayout);
+			secondaryStage.setScene(scene);
+			secondaryStage.show();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,6 +167,10 @@ public class App extends Application {
 	public boolean reserveSpace(String userIdentification, String vehicleLicensePlate, LocalDateTime selectedDateTime,
 			int i, int j) throws Exception {
 		return parking.reserveSpace(userIdentification,vehicleLicensePlate,selectedDateTime,i,j);
+	}
+
+	public void closeSecundaryView() {
+		this.secondaryStage.close();
 	}
 
 }
