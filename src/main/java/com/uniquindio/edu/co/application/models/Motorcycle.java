@@ -19,9 +19,6 @@ public class Motorcycle extends Vehicle {
     public void setSpeedMax(double speedMax) {
         this.speedMax = speedMax;
     }
-
- 
-
     @Override
     public String toString() {
         return "Motorcycle [speedMax=" + speedMax + ", motorcycleType=" + motorcycleType + ", getModel()=" + getModel()
@@ -36,6 +33,11 @@ public class Motorcycle extends Vehicle {
 
     public void setMotorcycleType(MotorcycleType motorcycleType) {
         this.motorcycleType = motorcycleType;
+    }
+
+    @Override
+    protected String getVehicleType() {
+        return motorcycleType.name();
     }
     
 }

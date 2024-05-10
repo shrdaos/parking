@@ -88,8 +88,6 @@ public class App extends Application {
 
 
 	private void showClientView() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'showClientView'");
 	}
 	//show
 	public void showReservation(Label lblColor, VBox card, int i, int j) {
@@ -173,4 +171,7 @@ public class App extends Application {
 		this.secondaryStage.close();
 	}
 
+    public Double getReservationAmmount(LocalDateTime endDate, int positionI, int positionJ) throws Exception {
+		return parking.getReservationAmmount(endDate,positionI,positionJ);
+    }
 }

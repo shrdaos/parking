@@ -23,6 +23,7 @@ public abstract class Vehicle {
     public String toString() {
         return "Vehicle [model=" + model + ", licensePlate=" + licensePlate + "]";
     }
+    protected abstract String getVehicleType();
     
     
 }

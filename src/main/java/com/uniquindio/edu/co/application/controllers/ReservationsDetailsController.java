@@ -1,6 +1,7 @@
 package com.uniquindio.edu.co.application.controllers;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -26,6 +27,7 @@ public class ReservationsDetailsController implements Initializable {
     private App app;
     private Label lblColor;
     private VBox card;
+    private Space space;
     @FXML
     private ResourceBundle resources;
 
@@ -59,6 +61,15 @@ public class ReservationsDetailsController implements Initializable {
     @FXML
     void endReservationAction(ActionEvent event) {
         System.out.println("terminando reservacion");
+        try {
+            System.out.println("haciendo llamado");
+            Double amount = app.getReservationAmmount(LocalDateTime.now(),space.getPositionI(),space.getPositionJ()); 
+            System.out.println(amount);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showErrorMessage("Error", e.getMessage());
+        }
 
     }
 
@@ -79,6 +90,7 @@ public class ReservationsDetailsController implements Initializable {
         this.app = app;
         this.lblColor = lblColor;
         this.card = card;
+        this.space = space;
         nameLbl.setText(user.getName());
         identificationLbl.setText(user.getIdentification());
         emailLbl.setText(user.getEmail());

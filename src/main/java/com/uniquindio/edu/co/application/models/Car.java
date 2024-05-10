@@ -10,5 +10,10 @@ public class Car extends Vehicle {
     public String toString() {
         return super.toString();
     }
+
+    @Override
+    protected String getVehicleType() {
+        return "CAR";
+    }
     
 }

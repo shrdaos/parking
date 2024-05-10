@@ -1,5 +1,6 @@
 package com.uniquindio.edu.co.application.models;
 
+import java.io.EOFException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.uniquindio.edu.co.application.models.enums.MotorcycleType;
 import com.uniquindio.edu.co.application.models.enums.UserRole;
 
 public class Parking {
@@ -107,8 +109,8 @@ public class Parking {
     //se quema la lista de usuarios
     userList.add(new User("sharon", "1193391919","asdf", "sharon@gmail.com", null, UserRole.ADMIN));
 
-    Car  clientCar = new Car("eco deluxe 2019","sun24");
-    Car  clientCar2 = new Car("victory bomber 2022","lpy24");
+    Motorcycle  clientCar = new Motorcycle(2000.0,MotorcycleType.CLASSIC,"eco deluxe 2019","sun24");
+    Motorcycle  clientCar2 = new Motorcycle(150.0,MotorcycleType.HYBRID,"victory bomber 2022","lpy24");
     User client1 =new User("juan", "2298891919","asdf", "juan@gmail.com", null, UserRole.CLIENT); 
     User client2 =new User("pablito", "2298803919","asdf", "pablo@gmail.com", null, UserRole.CLIENT); 
     try {
@@ -217,10 +219,31 @@ public class Parking {
 		throw new Exception("No hay ningun usuario con un vehiculo cuya placa sea "+licensePlate);
     }
 
-  
-    
+    public Double getReservationAmmount(LocalDateTime endDate, int positionI, int positionJ) throws Exception {
+        //se obtiene el espacio usando las posiciones i, j
+        Space space = getSpaceUsingPosition(positionI, positionJ);
+        //se valida que el espacio no este' libre
+        if(space.isFree())
+            throw new Exception("El espacio esta' libre, por tanto no se le puede obtener el monto de reservacio'n");
 
+        double totalPerHour  = getTotalPerHour(space.getVehicle().getVehicleType());
+        return space.calculateReservationAmmount(endDate,totalPerHour);
+    }
 
-
+    //metodo que permite obtener el valor por hora segun el tipo de vehiculo
+    private double getTotalPerHour(String vehicleType) throws Exception {
+        //se definen hybrid y classic como string para mejor legibilidad
+        String hybrid = MotorcycleType.HYBRID.name();
+        String classic = MotorcycleType.CLASSIC.name();
+        //se obtiene el monto usando una estructura if else
+        if(vehicleType.equalsIgnoreCase("car")){
+            return carFee;
+        } else if (vehicleType.equalsIgnoreCase(hybrid)){
+            return hybridMotorcicleFee;
+        } else if (vehicleType.equalsIgnoreCase(classic)){
+            return classicMotorcicleFee;
+        }
+        throw new Exception("Error, no se pudo determinar el tipo de vehiculo");
+    }
 
 }
