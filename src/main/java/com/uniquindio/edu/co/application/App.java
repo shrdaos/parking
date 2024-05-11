@@ -209,14 +209,19 @@ public class App extends Application {
     }
 
 	public List<SpaceRecord> getAllRecords() {
-		//return parking.getRecordList();
-		List<SpaceRecord> list  = new LinkedList<>();
-		for (int i = 0; i < 100; i++) {
-			SpaceRecord spaceRecord = new SpaceRecord(LocalDateTime.now(), LocalDateTime.now(), "model "+i,
-			 ""+(i*100), "119337091"+i, i, (i*2*2), i+(i*34));
-			 list.add(spaceRecord);
-		}
-
-		return list;
+		return parking.getRecordList();
 	}
+
+    public List<SpaceRecord> getRecordsBetween(LocalDateTime startTime, LocalDateTime endTime) {
+		return parking.getRecordsBetween(startTime,endTime);
+    }
+
+	public Double getMoneyEarned() {
+		return parking.getMoneyEarned();
+	}
+
+	public int countReservations() {
+		return parking.countSpaceRecords();
+	}
+
 }

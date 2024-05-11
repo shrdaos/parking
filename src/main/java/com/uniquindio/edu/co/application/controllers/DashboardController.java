@@ -1,6 +1,8 @@
 package com.uniquindio.edu.co.application.controllers;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -70,6 +72,7 @@ public class DashboardController implements Initializable {
     private VBox recordsVBox;
     @FXML
     void generateMoneyEarnedReport(ActionEvent event) {
+        generateMoneyEarnedReportImplementation();
 
     }
 
@@ -92,17 +95,12 @@ public class DashboardController implements Initializable {
     @FXML
     void refreshRecrodsAction(ActionEvent event) {
         refreshRecrods();
-
     }
-
-
 
     @FXML
     void updateClassicMotorcycleFeeAction(ActionEvent event) {
         updateClassicMotorcycleFee();
     }
-
-
 
     @FXML
     void updateHybridMotorcycleAction(ActionEvent event) {
@@ -157,8 +155,8 @@ public class DashboardController implements Initializable {
             HBox hBox = new HBox();
             hBox.setSpacing(10);
 
-            if(drawed+9<totalSpaces){
-                totalPerFile = 9;
+            if(drawed+10<totalSpaces){
+                totalPerFile = 10;
             }else{
                 totalPerFile = totalSpaces - drawed;
             }
@@ -172,7 +170,6 @@ public class DashboardController implements Initializable {
             }
             spacesVBox.getChildren().add(hBox);
         }
-        System.out.println(spaces.toString());
         return spaces;
 
     }
@@ -216,11 +213,22 @@ public class DashboardController implements Initializable {
         return lblPos;
     }
    private void generateRecordsReportImplementation() {
-    List<SpaceRecord> recordList = app.getRecordList();
-    for (SpaceRecord spaceRecord : recordList) {
-        System.out.println(spaceRecord.toString());
+        try {
+            validateDates();
+            LocalDateTime startTime = LocalDateTime.of( recordsFromDate.getValue(), LocalTime.of(0,0)); 
+            LocalDateTime endTime = LocalDateTime.of( recordsToDate.getValue(), LocalTime.of(23,59)); 
+            List<SpaceRecord> recordsFiltred = app.getRecordsBetween(startTime,endTime);
+            renderRecordList(recordsFiltred);
+        } catch (Exception e) {
+                Utils.showErrorMessage("Error",e.getMessage());
+        }
     }
+    private void validateDates() throws Exception {
+        if(recordsFromDate.getValue().compareTo(recordsToDate.getValue())>0){
+            throw new Exception("La fecha 'Hasta' debe ser mayor o igual a la fecha 'Desde'.");
+        }
     }
+
     private void updateCarFee() {
         try {
             double newFee = Utils.getPositiveDoubleIncludingZero("Ingrese el nuevo valor de la tarifa por hora para carro");
@@ -300,5 +308,17 @@ public class DashboardController implements Initializable {
        vBox.setMaxHeight(42);
        return  vBox;
     }
+    private void generateMoneyEarnedReportImplementation() {
+        try {
+            Double earnedMoney = app.getMoneyEarned();
+            int   totalReservations = app.countReservations();
+            Utils.showSuccessMessage("Dinero Generado", "Se ha generado :"+earnedMoney+" en un total de "+totalReservations+" reservaciones");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showErrorMessage("Error al obtener el dinero total", e.getMessage());
+        }
+    }
+
 
 }

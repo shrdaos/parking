@@ -78,6 +78,17 @@ public class SpaceRecord {
                 + licensePlate + ", userIdentification=" + userIdentification + ", positionI=" + positionI
                 + ", positionJ=" + positionJ + ", amountPaid=" + amountPaid + "]";
     }
+    public boolean isBetweenDates(LocalDateTime startTime, LocalDateTime endTime) {
+        try {
+            if(this.starTime.compareTo(startTime) >= 0 && this.endTime.compareTo(endTime) <=0)
+                return true;
+            return false;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     
 

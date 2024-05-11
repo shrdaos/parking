@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.uniquindio.edu.co.application.models.enums.MotorcycleType;
@@ -179,7 +180,6 @@ public class Parking {
     }
     //permite obtener un espacio usando su posicion i j
     public Space getSpaceUsingPosition(int i, int j) throws Exception {
-
         Predicate<Space>matchPosition = space -> (space.matchPosition(i, j));
         Optional<Space> space = spaceList.stream().filter(matchPosition).findFirst();
         if(space.isPresent())
@@ -245,6 +245,22 @@ public class Parking {
         recordList.add(spaceRecord);
         space.clearSpace();
         return ammount;
+    }
+
+    public List<SpaceRecord> getRecordsBetween(LocalDateTime startTime, LocalDateTime endTime) {
+        Predicate<SpaceRecord>matchDates = spaceRecord -> (spaceRecord.isBetweenDates(startTime, endTime));
+        List<SpaceRecord> spaceRecordList = recordList.stream().filter(matchDates).collect(Collectors.toList());
+        return spaceRecordList;
+    }
+
+    public Double getMoneyEarned() {
+        return   recordList.stream()
+                        .mapToDouble(SpaceRecord::getAmountPaid)
+                        .sum();
+    }
+
+    public int countSpaceRecords() {
+        return this.recordList.size();
     }
 
 }

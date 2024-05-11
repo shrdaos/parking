@@ -60,14 +60,11 @@ public class ReservationsDetailsController implements Initializable {
 
     @FXML
     void endReservationAction(ActionEvent event) {
-        System.out.println("terminando reservacion");
         try {
-            System.out.println("haciendo llamado");
-            
             Double amount = app.endReservation(LocalDateTime.now(),space.getPositionI(),space.getPositionJ()); 
-            System.out.println(amount);
             lblColor.setStyle(  "-fx-background-color: #48E120");
             card.setStyle("-fx-border-color: #48E120");
+            Utils.showSuccessMessage("Reservación terminada", "El costo de la reservación es de :"+amount);
             app.closeSecundaryView();
             
         } catch (Exception e) {

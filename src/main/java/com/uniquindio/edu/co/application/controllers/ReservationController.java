@@ -125,7 +125,6 @@ public class ReservationController implements Initializable {
         // Configurar un listener para el evento de selección del ComboBox
         userComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             updateVehicleComboBox(newValue.split("-")[1]);
-            //updateReservationState(oldValue,newValue);
         });
     }
     private void updateVehicleComboBox(String userId) {
@@ -146,10 +145,4 @@ public class ReservationController implements Initializable {
         this.i = i;
         this.j = j;
     }
-    public void updateReservationState(String oldValue, String newValue){
-        System.out.println(oldValue);
-        System.out.println(newValue);
-    }
-
-
 }
