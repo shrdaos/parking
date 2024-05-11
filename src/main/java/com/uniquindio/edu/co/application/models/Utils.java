@@ -125,4 +125,15 @@ public class Utils {
 			}
 		}
 	}
+    public static double getPositiveDoubleIncludingZero(String message) {
+		while(true){
+			try {
+				Double doubleValue = Double.parseDouble(JOptionPane.showInputDialog(message));
+				if(doubleValue>=0)
+					return doubleValue;	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+    }
 }

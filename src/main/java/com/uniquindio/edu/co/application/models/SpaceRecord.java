@@ -12,7 +12,7 @@ public class SpaceRecord {
     private int           positionJ;       
     private double        amountPaid;
     public SpaceRecord(LocalDateTime starTime, LocalDateTime endTime, String model, String licensePlate,
-            String userIdentification, int positionI, int positionJ) {
+            String userIdentification, int positionI, int positionJ, double ammount) {
         this.starTime = starTime;
         this.endTime = endTime;
         this.model = model;
@@ -20,7 +20,7 @@ public class SpaceRecord {
         this.userIdentification = userIdentification;
         this.positionI = positionI;
         this.positionJ = positionJ;
-        this.amountPaid = 0.0;
+        this.amountPaid = ammount;
     }
     public LocalDateTime getStarTime() {
         return starTime;

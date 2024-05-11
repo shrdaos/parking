@@ -123,7 +123,6 @@ public class Parking {
     userList.add(client1);
     userList.add(client2);
 
-    //
     }
 
     public User  getUserByCredentials(String email,String password) throws Exception{
@@ -175,19 +174,9 @@ public class Parking {
         //guardamos la informacion del vehiculo y la hora de reserva
         space.setVehicle(vehicle);
         space.setStartTime(selectedDateTime);
-
-        createRecord(user.getIdentification(),vehicle.getModel(),vehicleLicensePlate,selectedDateTime,i,j);
-
         return true;
 
     }
-
-    private void createRecord(String userIdentification, String model,String licensePlate, LocalDateTime selectedDateTime,
-                              int positionI, int positionJ) {
-        SpaceRecord record = new SpaceRecord(selectedDateTime, null, model, licensePlate, userIdentification, positionI, positionJ);
-        this.recordList.add(record);
-    }
-
     //permite obtener un espacio usando su posicion i j
     public Space getSpaceUsingPosition(int i, int j) throws Exception {
 
@@ -244,6 +233,18 @@ public class Parking {
             return classicMotorcicleFee;
         }
         throw new Exception("Error, no se pudo determinar el tipo de vehiculo");
+    }
+
+    public Double endReservation(LocalDateTime endTime, int positionI, int positionJ) throws Exception {
+        Space space = getSpaceUsingPosition(positionI, positionJ);
+        double ammount = getReservationAmmount(endTime, positionI, positionJ);
+        Vehicle spaceVehicle = space.getVehicle();
+        User user = getPropietaryByLicensePlate(spaceVehicle.getLicensePlate()); 
+        SpaceRecord spaceRecord = new SpaceRecord(space.getStartTime(), endTime,spaceVehicle.getModel() ,spaceVehicle.getLicensePlate(),
+                                                  user.getIdentification(), positionI, positionJ,ammount);
+        recordList.add(spaceRecord);
+        space.clearSpace();
+        return ammount;
     }
 
 }

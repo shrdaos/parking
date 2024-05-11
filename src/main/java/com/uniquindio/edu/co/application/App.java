@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.ModuleLayer.Controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.text.Utilities;
@@ -39,7 +40,7 @@ public class App extends Application {
 	private Parking parking;
     @Override
     public void start(Stage stage) throws Exception {
-		this.parking = new Parking("Parqueadero Quindio",1.0,1.0,1.0, new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+		this.parking = new Parking("Parqueadero Quindio",1500.0,2000.0,1500.0, new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
 		parking.burnData();
 
         try {
@@ -174,4 +175,48 @@ public class App extends Application {
     public Double getReservationAmmount(LocalDateTime endDate, int positionI, int positionJ) throws Exception {
 		return parking.getReservationAmmount(endDate,positionI,positionJ);
     }
+
+	public Double endReservation(LocalDateTime now, int positionI, int positionJ) throws Exception {
+		return parking.endReservation(now,positionI,positionJ);
+	}
+
+	public List<SpaceRecord> getRecordList() {
+		return parking.getRecordList();
+	}
+
+	public Double getCarFee() {
+		return parking.getCarFee();
+	}
+
+	public Double getHybridMotorcycleFee() {
+		return parking.getHybridMotorcicleFee();
+	}
+
+	public Double getClassicMotorcycleFee() {
+		return parking.getClassicMotorcicleFee();
+	}
+
+    public void updateCarFee(double newFee) {
+		parking.setCarFee(newFee);
+    }
+
+	public void updateClassicMotorcycleFee(double newFee) {
+		parking.setClassicMotorcicleFee(newFee);
+	}
+
+    public void updateHybridMotorcycle(double newFee) {
+		parking.setHybridMotorcicleFee(newFee);
+    }
+
+	public List<SpaceRecord> getAllRecords() {
+		//return parking.getRecordList();
+		List<SpaceRecord> list  = new LinkedList<>();
+		for (int i = 0; i < 100; i++) {
+			SpaceRecord spaceRecord = new SpaceRecord(LocalDateTime.now(), LocalDateTime.now(), "model "+i,
+			 ""+(i*100), "119337091"+i, i, (i*2*2), i+(i*34));
+			 list.add(spaceRecord);
+		}
+
+		return list;
+	}
 }

@@ -1,18 +1,23 @@
 package com.uniquindio.edu.co.application.controllers;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.uniquindio.edu.co.application.App;
 import com.uniquindio.edu.co.application.models.Space;
+import com.uniquindio.edu.co.application.models.SpaceRecord;
+import com.uniquindio.edu.co.application.models.Utils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -22,7 +27,6 @@ import javafx.scene.layout.VBox;
 
 public class DashboardController implements Initializable {
     private App app;
-    private List<Space> spaceList;
 
     @FXML
     private ResourceBundle resources;
@@ -46,6 +50,9 @@ public class DashboardController implements Initializable {
     private TextField profileIdentificationTXT;
 
     @FXML
+    private Button refreshRecordsButton;
+
+    @FXML
     private TextField profileNameTXT;
 
     @FXML
@@ -59,7 +66,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private VBox spacesVBox;
-
+    @FXML
+    private VBox recordsVBox;
     @FXML
     void generateMoneyEarnedReport(ActionEvent event) {
 
@@ -67,6 +75,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     void generateRecordsReport(ActionEvent event) {
+        generateRecordsReportImplementation();
 
     }
 
@@ -77,17 +86,27 @@ public class DashboardController implements Initializable {
 
     @FXML
     void updateCarFeeAction(ActionEvent event) {
+        updateCarFee();
+    }
+
+    @FXML
+    void refreshRecrodsAction(ActionEvent event) {
+        refreshRecrods();
 
     }
+
+
 
     @FXML
     void updateClassicMotorcycleFeeAction(ActionEvent event) {
-
+        updateClassicMotorcycleFee();
     }
+
+
 
     @FXML
     void updateHybridMotorcycleAction(ActionEvent event) {
-
+        updateHybridMotorcycle();
     }
 
     @FXML
@@ -113,16 +132,19 @@ public class DashboardController implements Initializable {
     }
     public void spaceClickedAction(MouseEvent event,int i,int j,Label lblColor, VBox card) {
         app.handleSpaceClicked(lblColor,card,i,j);
-        System.out.println("Hola mundo i"+i+"  j"+j);
-        //lblColor.setStyle("-fx-background-color: #ff0000");
-        //card.setStyle("-fx-border-color:  #ff0000");
     }
 
     public void setMain(App app,int totalSpaces) {
         this.app = app;
-        this.spaceList = new ArrayList<>();
         app.setSpaces(getSpaces(totalSpaces));
+        updateFees(app.getCarFee(),app.getHybridMotorcycleFee(),app.getClassicMotorcycleFee());
     }
+    private void updateFees(Double carFee, Double hybridMotorcycleFee, Double classicMotorcycleFee) {
+        carFeeLbl.setText(""+carFee);
+        hybridMotorcycleFeeLbl.setText(""+hybridMotorcycleFee);
+        classicMotorcycleFeeLbl.setText(""+classicMotorcycleFee);
+    }
+
     private List<Space> getSpaces(int totalSpaces) {
         List<Space> spaces = new ArrayList<>();
         int drawed = 0;
@@ -193,6 +215,90 @@ public class DashboardController implements Initializable {
         lblPos.setAlignment(Pos.CENTER);
         return lblPos;
     }
+   private void generateRecordsReportImplementation() {
+    List<SpaceRecord> recordList = app.getRecordList();
+    for (SpaceRecord spaceRecord : recordList) {
+        System.out.println(spaceRecord.toString());
+    }
+    }
+    private void updateCarFee() {
+        try {
+            double newFee = Utils.getPositiveDoubleIncludingZero("Ingrese el nuevo valor de la tarifa por hora para carro");
+            app.updateCarFee(newFee);
+            this.carFeeLbl.setText(""+newFee);
+        } catch (Exception e) {
+            Utils.showErrorMessage("Error",e.getMessage());
+        }
+    }
+    private void updateClassicMotorcycleFee() {
+        try {
+            double newFee = Utils.getPositiveDoubleIncludingZero("Ingrese el nuevo valor de la tarifa por hora para la moto clásica");
+            app.updateClassicMotorcycleFee(newFee);
+            classicMotorcycleFeeLbl.setText(""+newFee);
+        } catch (Exception e) {
+            Utils.showErrorMessage("Error",e.getMessage());
+        }
+    }
+    private void updateHybridMotorcycle() {
+        try {
+            double newFee = Utils.getPositiveDoubleIncludingZero("Ingrese el nuevo valor de la tarifa por hora para la moto híbrida");
+            app.updateHybridMotorcycle(newFee);
+            hybridMotorcycleFeeLbl.setText(""+newFee);
+        } catch (Exception e) {
+            Utils.showErrorMessage("Error",e.getMessage());
+        }
+    }
+    private void refreshRecrods() {
+        List<SpaceRecord> recordList = app.getAllRecords();
+        renderRecordList(recordList);
+    }
 
+    private void renderRecordList(List<SpaceRecord> recordList) {
+        recordsVBox.getChildren().clear();
+        for (SpaceRecord spaceRecord : recordList) {
+           HBox recordHbox = getRecordHBox(spaceRecord); 
+           recordsVBox.getChildren().add(recordHbox);
+        }
+    }
+
+    private HBox getRecordHBox(SpaceRecord spaceRecord) {
+        HBox hBox = new HBox();
+        // Agregando margen a la derecha e izquierda
+        Insets margin = new Insets(5, 0, 5,0); // Margen de 3 a la derecha e izquierda
+        VBox.setMargin(hBox, margin);
+        // Define el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        //se crea la hora de inicio
+        VBox startTimeVBox = getRecordVBoxComponent("Fecha Inicio",""+spaceRecord.getStarTime().format(formatter));
+        //se crea la hora de final
+        VBox endTimeVBox = getRecordVBoxComponent("Fecha Fin", ""+spaceRecord.getEndTime().format(formatter));
+        // se crea el modelo
+        VBox modelVBox = getRecordVBoxComponent("Modelo",spaceRecord.getModel());
+        // se crea la placa 
+        VBox licenseVBox = getRecordVBoxComponent("Placa",spaceRecord.getLicensePlate());
+        // se crea la identificacion del usuario
+        VBox userIdVbox = getRecordVBoxComponent("Identificación",spaceRecord.getUserIdentification());
+        // se crea la posicion
+        VBox positionVBox = getRecordVBoxComponent("Posicion","I:"+spaceRecord.getPositionI() + " - J:" + spaceRecord.getPositionJ());
+        // se crea el monto pagado
+        VBox ammountVBox = getRecordVBoxComponent("Monto Pagado",""+spaceRecord.getAmountPaid());
+        //se agregan los componentes vBox al hbox principal
+        hBox.getChildren().addAll(startTimeVBox,endTimeVBox,modelVBox,licenseVBox,userIdVbox,positionVBox,ammountVBox);
+        return hBox;
+    }
+
+    private VBox getRecordVBoxComponent(String title, String content) {
+       VBox vBox = new VBox();
+       vBox.setAlignment(Pos.CENTER);
+       Label titleLabel = new Label(title);
+       Label contentLabel = new Label(content); 
+       vBox.getChildren().addAll(titleLabel,contentLabel);
+       vBox.setStyle("-fx-border-color: #808080");
+       vBox.setMinWidth(100);
+       vBox.setMaxWidth(102);
+       vBox.setMinHeight(40);
+       vBox.setMaxHeight(42);
+       return  vBox;
+    }
 
 }

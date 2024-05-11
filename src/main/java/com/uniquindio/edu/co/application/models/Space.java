@@ -88,5 +88,12 @@ public class Space {
         }
         throw new Exception("La fecha de inicio es menor a la fecha de finalizacion,");
     }
+
+    //elimina el vehiculo y el tiempo de inicio de reservacion para dejar 
+    //el espacio libre
+    public void clearSpace() {
+        this.startTime = null;
+        this.vehicle = null;
+    }
     
 }

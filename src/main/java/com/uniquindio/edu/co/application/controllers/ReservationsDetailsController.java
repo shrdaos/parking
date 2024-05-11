@@ -63,8 +63,12 @@ public class ReservationsDetailsController implements Initializable {
         System.out.println("terminando reservacion");
         try {
             System.out.println("haciendo llamado");
-            Double amount = app.getReservationAmmount(LocalDateTime.now(),space.getPositionI(),space.getPositionJ()); 
+            
+            Double amount = app.endReservation(LocalDateTime.now(),space.getPositionI(),space.getPositionJ()); 
             System.out.println(amount);
+            lblColor.setStyle(  "-fx-background-color: #48E120");
+            card.setStyle("-fx-border-color: #48E120");
+            app.closeSecundaryView();
             
         } catch (Exception e) {
             e.printStackTrace();
