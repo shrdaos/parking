@@ -24,14 +24,25 @@ public class Parking {
    private List<SpaceRecord> recordList;
 
     public Parking(String name, double classicMotorcicleFee, double hybridMotorcicleFee, double carFee,
-        List<Space> spaceList, List<User> userList, List<SpaceRecord> recordList) {
+        List<Space> spaceList, List<User> userList, List<SpaceRecord> recordList) throws Exception {
+
+        if (name == null || name.isBlank())
+            throw new Exception("El nombre del parqueadero no puede estar vacio");
+        if (classicMotorcicleFee < 0)
+            throw new Exception("La tarifa por hora de motos clasicas no puede ser menor que cero");
+        if (hybridMotorcicleFee < 0)
+            throw new Exception("La tarifa por hora de motos hibridas no puede ser menor que cero");
+        if (carFee < 0)
+            throw new Exception("La tarifa por hora de carros no puede ser menor que cero");
+
         this.name = name;
         this.classicMotorcicleFee = classicMotorcicleFee;
         this.hybridMotorcicleFee = hybridMotorcicleFee;
         this.carFee = carFee;
-        this.spaceList = spaceList;
-        this.userList = userList;
-        this.recordList = recordList;
+        //para las listas en caso de que sean nulas se crea una lista vacia []
+        this.spaceList = (spaceList != null)? spaceList : new ArrayList<>();
+        this.userList = (userList != null)? userList : new ArrayList<>();
+        this.recordList = (recordList != null)? recordList : new ArrayList<>() ;
     }
 
     public String getName() {
@@ -99,21 +110,49 @@ public class Parking {
 
     public void burnData() {
         //se queman los espacios
-    spaceList.add(new Space(1,1,null,null));
-    spaceList.add(new Space(1,2,null,null));
-    spaceList.add(new Space(1,3,null,null));
-    spaceList.add(new Space(1,4,null,null));
-    spaceList.add(new Space(1,5,null,null));
-    spaceList.add(new Space(1,6,null,null));
-    spaceList.add(new Space(2,1,null,null));
-
+    try {
+        spaceList.add(new Space(1,1,null,null));
+        spaceList.add(new Space(1,2,null,null));
+        spaceList.add(new Space(1,3,null,null));
+        spaceList.add(new Space(1,4,null,null));
+        spaceList.add(new Space(1,5,null,null));
+        spaceList.add(new Space(1,6,null,null));
+        spaceList.add(new Space(2,1,null,null));
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
     //se quema la lista de usuarios
-    userList.add(new User("sharon", "1193391919","asdf", "sharon@gmail.com", null, UserRole.ADMIN));
+    try {
+        userList.add(new User("sharon", "1193391919","asdf", "sharon@gmail.com", null, UserRole.ADMIN));
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
 
-    Motorcycle  clientCar = new Motorcycle(2000.0,MotorcycleType.CLASSIC,"eco deluxe 2019","sun24");
-    Motorcycle  clientCar2 = new Motorcycle(150.0,MotorcycleType.HYBRID,"victory bomber 2022","lpy24");
-    User client1 =new User("juan", "2298891919","asdf", "juan@gmail.com", null, UserRole.CLIENT); 
-    User client2 =new User("pablito", "2298803919","asdf", "pablo@gmail.com", null, UserRole.CLIENT); 
+    Motorcycle clientCar2 = null;
+    Motorcycle  clientCar = null;
+    try {
+        clientCar = new Motorcycle(2000.0,MotorcycleType.CLASSIC,"eco deluxe 2019","sun24");
+        clientCar2 = new Motorcycle(150.0,MotorcycleType.HYBRID,"victory bomber 2022","lpy24");
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    User client1 = null;
+    try {
+        client1 = new User("juan", "2298891919","asdf", "juan@gmail.com", null, UserRole.CLIENT);
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } 
+    User client2 = null;
+    try {
+        client2 = new User("pablito", "2298803919","asdf", "pablo@gmail.com", null, UserRole.CLIENT);
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } 
     try {
         client1.addNewVehicle(clientCar);
         client2.addNewVehicle(clientCar2);
@@ -191,7 +230,7 @@ public class Parking {
 
     //metodo que verifica si un vehiculo ya esta' en algu'n espacio por medio de la placa (para evitar reservar dos
     //espacios con el mismo vehiculo)
-    private boolean vehicleAlreadyOnSpace(String vehicleLicensePlate) {
+    public boolean vehicleAlreadyOnSpace(String vehicleLicensePlate) {
        Predicate<Space> matchVehicleLicensePlate = space -> (space.matchVehicleLicensePlate(vehicleLicensePlate));
         Optional<Space> space = spaceList.stream().filter(matchVehicleLicensePlate).findFirst();
         if(space.isPresent())

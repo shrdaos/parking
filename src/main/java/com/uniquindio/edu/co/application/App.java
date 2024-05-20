@@ -40,14 +40,14 @@ public class App extends Application {
 	private Parking parking;
     @Override
     public void start(Stage stage) throws Exception {
-		this.parking = new Parking("Parqueadero Quindio",1500.0,2000.0,1500.0, new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+		this.parking = new Parking("Star Parking",1500.0,2000.0,1500.0, new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
 		parking.burnData();
 
         try {
 			this.primaryStage = stage;
 			this.primaryStage.setTitle(this.parking.getName() != null? this.parking.getName():"Parqueadero");
-			//showLogin();
-			showDashboard();
+			showLogin();
+			//showDashboard();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +78,6 @@ public class App extends Application {
 	public void loginUser(String email, String password) throws Exception {
 		User user =  this.parking.getUserByCredentials(email, password);
 		this.sesionUser = user;
-		System.out.println(user.toString());
 
 		if(user.getUserRole().equals(UserRole.ADMIN) ){
 			showDashboard();

@@ -75,7 +75,7 @@ public class ReservationController implements Initializable {
             //obtiene la cedula del usuario
             userIdentification = (userComboBox.getSelectionModel().getSelectedItem()).split("-")[1];
             //obtiene la placa del vehiculo 
-            vehicleLicensePlate = (vehicleComboBox.getSelectionModel().getSelectedItem()).split("-")[1];
+            vehicleLicensePlate = (vehicleComboBox.getSelectionModel().getSelectedItem()).split("-")[0];
             //se hace la reserva
             boolean isReserved = app.reserveSpace(userIdentification,vehicleLicensePlate,selectedDateTime,i,j);
             if(isReserved){

@@ -6,9 +6,13 @@ public class Motorcycle extends Vehicle {
     private double speedMax;
     private MotorcycleType motorcycleType;
 
-    public Motorcycle(double speedMax, MotorcycleType motorcycleType, String model, String licensePlate) {
+    public Motorcycle(double speedMax, MotorcycleType motorcycleType, String model, String licensePlate) throws Exception {
         super(model,licensePlate);
+        if( speedMax <0)
+            throw new Exception("La velocidad maxima no puede ser un valor negativo");
         this.speedMax = speedMax;
+        if( motorcycleType == null)
+            throw new Exception("El tipo de motocicleta no puede ser nulo");
         this.motorcycleType = motorcycleType;
     }
 

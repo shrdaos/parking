@@ -3,7 +3,11 @@ package com.uniquindio.edu.co.application.models;
 public abstract class Vehicle {
     private String model;
     private String licensePlate;
-    public Vehicle(String model, String licensePlate) {
+    public Vehicle(String model, String licensePlate) throws Exception {
+        if( model == null || model.isBlank())
+            throw new Exception("El modelo debe ser diferente de null");
+        if( licensePlate == null || licensePlate.isBlank())
+            throw new Exception("La placa debe ser diferente de null");
         this.model = model;
         this.licensePlate = licensePlate;
     }

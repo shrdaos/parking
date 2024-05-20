@@ -163,7 +163,11 @@ public class DashboardController implements Initializable {
 
             for (int i = 0; i < totalPerFile ; i++) {
                 VBox card = getSpaceCard(file, column);
-                spaces.add(new Space(file, column, null, null));
+                try {
+                    spaces.add(new Space(file, column, null, null));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 hBox.getChildren().add(card);
                 drawed++;
                 column ++;

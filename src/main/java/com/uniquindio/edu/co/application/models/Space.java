@@ -11,7 +11,12 @@ public class Space {
     private LocalDateTime startTime;
     private Vehicle vehicle;
     
-    public Space(int positionI, int positionJ, LocalDateTime startTime, Vehicle vehicle) {
+    public Space(int positionI, int positionJ, LocalDateTime startTime, Vehicle vehicle)throws Exception {
+        if( positionI <0)
+            throw new Exception("la posicion I no puede ser menor que cero");
+        if( positionJ <0)
+            throw new Exception("la posicion J no puede ser menor que cero");
+
         this.positionI = positionI;
         this.positionJ = positionJ;
         this.startTime = startTime;

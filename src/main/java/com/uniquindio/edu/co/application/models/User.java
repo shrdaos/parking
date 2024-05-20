@@ -15,7 +15,16 @@ public class User {
     private List<Vehicle> vehicleList;
     private UserRole userRole;
     public User(String name, String identification, String password, String email, List<Vehicle> vehicleList,
-            UserRole userRole) {
+            UserRole userRole) throws Exception {
+            
+        if(name ==null || name.isBlank())
+                throw new Exception("El nombre de usuario no puede ser nulo");
+        if(identification ==null || identification.isBlank())
+                throw new Exception("La identificacio'n del usuario no puede ser nulo");
+        if(password ==null || password.isBlank())
+                throw new Exception("La clave del usuario no puede ser nulo");
+        if(email ==null || email.isBlank())
+                throw new Exception("El email del usuario no puede ser nulo");
         this.name = name;
         this.identification = identification;
         this.password = password;
@@ -89,7 +98,7 @@ public class User {
     }
     public ArrayList<String> getVehiclesLicensePlateAndModel() {
           return vehicleList.stream()
-                .map(vehicle -> vehicle.getModel()+"-"+vehicle.getLicensePlate())
+                .map(vehicle -> vehicle.getLicensePlate()+"-"+vehicle.getModel())
                 .collect(Collectors.toCollection(ArrayList::new));
     }
     public Vehicle getVehicleByLicensePlate(String vehicleLicensePlate) throws Exception {
