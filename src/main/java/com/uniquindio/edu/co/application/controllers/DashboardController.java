@@ -223,10 +223,26 @@ public class DashboardController implements Initializable {
             LocalDateTime endTime = LocalDateTime.of( recordsToDate.getValue(), LocalTime.of(23,59)); 
             List<SpaceRecord> recordsFiltred = app.getRecordsBetween(startTime,endTime);
             renderRecordList(recordsFiltred);
+
+            double totalEarnedByCars = getTotalEarnedByType(recordsFiltred,"CAR");
+            double totalEarnedByClassicMotorcycles = getTotalEarnedByType(recordsFiltred,"CLASSIC");
+            double totalEarnedByHybridMotorcycles = getTotalEarnedByType(recordsFiltred,"HYBRID");
+            
+            Utils.showSuccessMessage("Total obtenido", "El total generado entre las fechas es de. \nCarros :"+totalEarnedByCars+
+                                     "  \nMotos Clásicas :"+totalEarnedByClassicMotorcycles+
+                                     "  \nMotos Hibridas :"+totalEarnedByHybridMotorcycles);
         } catch (Exception e) {
                 Utils.showErrorMessage("Error",e.getMessage());
         }
     }
+    private double getTotalEarnedByType(List<SpaceRecord> recordsFiltred, String type ) {
+
+        return recordsFiltred.stream()
+        .filter(record -> record.getVehicleType().equals(type))
+        .mapToDouble(SpaceRecord::getAmountPaid)
+        .sum();
+        }
+
     private void validateDates() throws Exception {
         if(recordsFromDate.getValue().compareTo(recordsToDate.getValue())>0){
             throw new Exception("La fecha 'Hasta' debe ser mayor o igual a la fecha 'Desde'.");

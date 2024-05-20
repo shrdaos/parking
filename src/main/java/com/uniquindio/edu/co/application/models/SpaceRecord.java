@@ -11,8 +11,9 @@ public class SpaceRecord {
     private int           positionI;       
     private int           positionJ;       
     private double        amountPaid;
+    private String        vehicleType;
     public SpaceRecord(LocalDateTime starTime, LocalDateTime endTime, String model, String licensePlate,
-            String userIdentification, int positionI, int positionJ, double ammount) {
+            String userIdentification, int positionI, int positionJ,String vehicleType, double ammount) {
         this.starTime = starTime;
         this.endTime = endTime;
         this.model = model;
@@ -21,7 +22,9 @@ public class SpaceRecord {
         this.positionI = positionI;
         this.positionJ = positionJ;
         this.amountPaid = ammount;
+        this.vehicleType = vehicleType;
     }
+    
     public LocalDateTime getStarTime() {
         return starTime;
     }
@@ -88,6 +91,14 @@ public class SpaceRecord {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
     
     

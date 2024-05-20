@@ -130,11 +130,17 @@ public class Parking {
         e.printStackTrace();
     }
 
-    Motorcycle clientCar2 = null;
-    Motorcycle  clientCar = null;
+    Motorcycle motorcycle1 = null;
+    Motorcycle  motorcycle2 = null;
+    Motorcycle  motorcycle3 = null;
+    Car car1 = null;
+    Car car2 = null;
     try {
-        clientCar = new Motorcycle(2000.0,MotorcycleType.CLASSIC,"eco deluxe 2019","sun24");
-        clientCar2 = new Motorcycle(150.0,MotorcycleType.HYBRID,"victory bomber 2022","lpy24");
+        motorcycle1 = new Motorcycle(2000.0,MotorcycleType.CLASSIC,"eco deluxe 2019","sun24");
+         car1 = new Car("spark Gt","aegis2");
+         car2 = new Car("Nissan 10","cre1lp");
+        motorcycle2 = new Motorcycle(150.0,MotorcycleType.HYBRID,"victory bomber 2022","lpy24");
+        motorcycle3 = new Motorcycle(250.0,MotorcycleType.HYBRID,"victory 2050","kpsp4");
     } catch (Exception e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -154,8 +160,11 @@ public class Parking {
         e.printStackTrace();
     } 
     try {
-        client1.addNewVehicle(clientCar);
-        client2.addNewVehicle(clientCar2);
+        client2.addNewVehicle(motorcycle1);
+        client2.addNewVehicle(motorcycle3);
+        client1.addNewVehicle(motorcycle2);
+        client1.addNewVehicle(car1);
+        client1.addNewVehicle(car2);
     } catch (Exception e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -280,7 +289,7 @@ public class Parking {
         Vehicle spaceVehicle = space.getVehicle();
         User user = getPropietaryByLicensePlate(spaceVehicle.getLicensePlate()); 
         SpaceRecord spaceRecord = new SpaceRecord(space.getStartTime(), endTime,spaceVehicle.getModel() ,spaceVehicle.getLicensePlate(),
-                                                  user.getIdentification(), positionI, positionJ,ammount);
+                                                  user.getIdentification(), positionI, positionJ,spaceVehicle.getVehicleType(),ammount);
         recordList.add(spaceRecord);
         space.clearSpace();
         return ammount;

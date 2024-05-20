@@ -28,6 +28,4 @@ public abstract class Vehicle {
         return "Vehicle [model=" + model + ", licensePlate=" + licensePlate + "]";
     }
     protected abstract String getVehicleType();
-    
-    
 }

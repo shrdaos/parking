@@ -33,7 +33,7 @@ public class SpaceRecordTest {
         SpaceRecord spaceRecord;
         try {
             spaceRecord = new SpaceRecord(LocalDateTime.now(),LocalDateTime.now(),"2012 kia", 
-                                "2da23","119118118",1, 1, 1200.0) ;
+                                "2da23","119118118",1, 1,null, 1200.0) ;
             assertEquals(spaceRecord.getAmountPaid(), 1200.0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class SpaceRecordTest {
         try {
             spaceRecord = new SpaceRecord(LocalDateTime.of(2010, 1, 18, 3, 33, 33),
                                           LocalDateTime.of(2010, 1, 20, 3, 33, 33),
-                                          "2012 kia","2da23","119118118",1, 1, 1200.0) ;
+                                          "2012 kia","2da23","119118118",1, 1,null, 1200.0) ;
             assertTrue(spaceRecord.isBetweenDates(LocalDateTime.of(2010, 1, 15, 3, 33, 33),
                                                    LocalDateTime.of(2010, 1, 25, 3, 33, 33)));
         } catch (Exception e) {
